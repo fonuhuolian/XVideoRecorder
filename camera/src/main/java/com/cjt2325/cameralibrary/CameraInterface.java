@@ -423,7 +423,7 @@ public class CameraInterface implements Camera.PreviewCallback {
     /**
      * 销毁Camera
      */
-    void doDestroyCamera() {
+    public void doDestroyCamera() {
         errorLisenter = null;
         if (null != mCamera) {
             try {

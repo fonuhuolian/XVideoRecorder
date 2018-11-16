@@ -616,4 +616,8 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     public void setVideoViewSize() {
         handler.sendEmptyMessage(0);
     }
+
+    public void releaseResource() {
+        CameraInterface.getInstance().doDestroyCamera();
+    }
 }
