@@ -396,7 +396,7 @@ public class CameraInterface implements Camera.PreviewCallback {
                     }
                 });
                 Log.i(TAG, "=== Start Preview ===");
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
