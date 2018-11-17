@@ -56,6 +56,8 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     //Camera状态机
     private CameraMachine machine;
 
+    private StartPreviewRun previewRun;
+
     //闪关灯状态
     private static final int TYPE_FLASH_AUTO = 0x021;
     private static final int TYPE_FLASH_ON = 0x022;
@@ -334,12 +336,12 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         LogUtil.i("JCameraView SurfaceCreated");
-        new Thread() {
-            @Override
-            public void run() {
-                CameraInterface.getInstance().doOpenCamera(JCameraView.this);
-            }
-        }.start();
+        if (handler != null && previewRun != null)
+            handler.removeCallbacks(previewRun);
+
+        previewRun = new StartPreviewRun();
+
+        handler.postDelayed(previewRun, 1);
     }
 
     @Override
@@ -615,5 +617,18 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
     public void setVideoViewSize() {
         handler.sendEmptyMessage(0);
+    }
+
+    private class StartPreviewRun implements Runnable {
+
+        @Override
+        public void run() {
+            CameraInterface.getInstance().doOpenCamera(JCameraView.this);
+        }
+    }
+
+    public void onDestory() {
+        if (handler != null && previewRun != null)
+            handler.removeCallbacks(previewRun);
     }
 }
