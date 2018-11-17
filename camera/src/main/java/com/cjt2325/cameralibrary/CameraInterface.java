@@ -389,12 +389,6 @@ public class CameraInterface implements Camera.PreviewCallback {
                 mCamera.setPreviewCallback(this); //每一帧回调
                 mCamera.startPreview();//启动浏览
                 isPreviewing = true;
-                mCamera.autoFocus(new Camera.AutoFocusCallback() {
-                    @Override
-                    public void onAutoFocus(boolean b, Camera camera) {
-                        camera.cancelAutoFocus();
-                    }
-                });
                 Log.i(TAG, "=== Start Preview ===");
             } catch (Exception e) {
                 e.printStackTrace();
