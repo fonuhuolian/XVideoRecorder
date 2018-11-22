@@ -627,6 +627,10 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         }
     }
 
+    public void setRecordMaxDuration(int duration) {
+        mCaptureLayout.setDuration(duration);
+    }
+
     public void onDestory() {
         if (handler != null && previewRun != null)
             handler.removeCallbacks(previewRun);
