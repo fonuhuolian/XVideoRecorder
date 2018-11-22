@@ -1,6 +1,7 @@
 # XVideoRecorder
 
 由于`JCameraView`好久没有更新了，所以在此项目的基础上做了些细微改动(再次感谢JCameraView作者开源)
+
 [JCameraView源码](https://github.com/CJT2325/CameraView)
 
 > 添加依赖
