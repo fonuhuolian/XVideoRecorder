@@ -115,3 +115,11 @@ public void onPause() {
     jCameraView.onPause();
 }
 ```
+
+> 混淆
+
+```
+-dontwarn com.cjt2325.cameralibrary.**
+-keep class com.cjt2325.cameralibrary.**{*;}
+```
+
