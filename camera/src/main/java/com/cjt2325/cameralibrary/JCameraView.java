@@ -58,12 +58,6 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
     private StartPreviewRun previewRun;
 
-    //闪关灯状态
-    private static final int TYPE_FLASH_AUTO = 0x021;
-    private static final int TYPE_FLASH_ON = 0x022;
-    private static final int TYPE_FLASH_OFF = 0x023;
-    private int type_flash = TYPE_FLASH_OFF;
-
     //拍照浏览时候的类型
     public static final int TYPE_PICTURE = 0x001;
     public static final int TYPE_VIDEO = 0x002;
@@ -121,6 +115,11 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     private boolean firstTouch = true;
     private float firstTouchLength = 0;
 
+    private int topMargin = 0;
+    private int bottomMargin = 0;
+    private boolean isMeasure = false;
+    private int previewHight;
+
     private Handler handler = new Handler() {
 
         @Override
@@ -134,11 +133,19 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
             switch (msg.what) {
 
                 case 0:
-                    int preview_height = CameraInterface.getInstance().getPreview_width();
-                    int preview_width = CameraInterface.getInstance().getPreview_height();
-
 
                     LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+
+                    if (isMeasure) {
+                        params.topMargin = topMargin;
+                        params.bottomMargin = bottomMargin;
+
+                        frameLayout.setLayoutParams(params);
+                        return;
+                    }
+
+                    int preview_height = CameraInterface.getInstance().getPreview_width();
+                    int preview_width = CameraInterface.getInstance().getPreview_height();
 
                     if (preview_width != 0 && preview_height != 0) {
 
@@ -150,6 +157,11 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                                 int i = heigth - finalHigth;
                                 params.topMargin = i * 2 / 5;
                                 params.bottomMargin = i * 3 / 5;
+
+                                topMargin = params.topMargin;
+                                bottomMargin = params.bottomMargin;
+                                preview_height = heigth - topMargin - bottomMargin;
+                                isMeasure = true;
                             }
                         }
                     }
@@ -263,6 +275,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
             @Override
             public void cancel() {
                 machine.cancle(mVideoView.getHolder(), screenProp);
+                resetVideoViewSize();
             }
 
             @Override
@@ -418,6 +431,14 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
             videoViewParam.gravity = Gravity.CENTER;
             mVideoView.setLayoutParams(videoViewParam);
         }
+    }
+
+    private void resetVideoViewSize() {
+        LayoutParams videoViewParam;
+        int height = previewHight == 0 ? LayoutParams.MATCH_PARENT : previewHight;
+        videoViewParam = new LayoutParams(LayoutParams.MATCH_PARENT, height);
+        videoViewParam.gravity = Gravity.CENTER;
+        mVideoView.setLayoutParams(videoViewParam);
     }
 
     /**************************************************

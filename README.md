@@ -19,7 +19,7 @@ allprojects {
 ```
 `module build.gradle `
 ```
-implementation 'com.github.fonuhuolian:XVideoRecorder:0.0.9'
+implementation 'com.github.fonuhuolian:XVideoRecorder:1.0.0'
 ```
 > 添加权限
 
